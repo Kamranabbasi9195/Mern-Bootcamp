@@ -1,6 +1,6 @@
-const clientModel = require('../models/client');
+const { clientModel } = require('../models');
 
-const addClient = (body) =>{
+const addClient = (body) => {
     const doc = new clientModel(body);
     const query = {_id: doc._id};
     return clientModel.findOneAndUpdate(query, doc, {
@@ -11,12 +11,12 @@ const addClient = (body) =>{
 
 const updateClient = (body) =>{
     const query = {_id: body._id};
-    return clientModel.findOneAndUpdate(query, {
+    return clientModel.findOneAndUpdate(query, body, {
         new:true
     });
 };
 
-const delClient = (filter) => {
+const deleteClient = (filter) => {
     return clientModel.findOneAndDelete(filter);
 };
 
@@ -25,14 +25,13 @@ const getClient = (filter) => {
 };
 
 const getAllClients = (filter) => {
-    return clientModel.find();
+    return clientModel.find(filter);
 };
 
 module.exports = {
     addClient,
     updateClient,
-    delClient,
+    deleteClient,
     getAllClients,
     getClient
 };
-

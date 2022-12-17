@@ -3,20 +3,25 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-const mongoose=require('mongoose');
+const mongoose = require('mongoose');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/usersRouter');
+// var indexRouter = require('./routes/index');
+const {
+  userRoutes,
+  adminRoutes,
+  clientRoutes
+} = require ('./routes');
 
 var app = express();
-// connect the database in mongooes db
+
 mongoose
-.connect('mongodb://127.0.0.1:27017/my-db', (err) =>{
+  .connect('mongodb://127.0.0.1:27017/my-db', (err) =>{
   if (err) {
     return console.log('Error connecting with DB', err);
   }
-  console.log('DB connected successfully');
-})
+
+  console.log(`DB connected successfully`);
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -28,8 +33,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+// app.use('/', indexRouter);
+app.use('/users', userRoutes);
+app.use('/admins', adminRoutes);
+app.use('/clients', clientRoutes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

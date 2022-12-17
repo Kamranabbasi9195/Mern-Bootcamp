@@ -1,4 +1,3 @@
-// How to create a model and schema 
 const mongoose = require('mongoose');
 
 const adminSchema = new mongoose.Schema({
@@ -13,3 +12,4 @@ const adminSchema = new mongoose.Schema({
 },{collection: 'admins'});
 
 module.exports = mongoose.model('admins',adminSchema);
+

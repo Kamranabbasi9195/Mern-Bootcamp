@@ -1,5 +1,9 @@
+const userModel = require('./user');
+const adminModel = require('./admin');
+const clientModel = require('./client');
 
-const userModel = require('./user'); //middleware for accessing user and ither schemas
-module.exports ={
-    userModel
+module.exports = {
+    userModel,
+    adminModel,
+    clientModel
 }

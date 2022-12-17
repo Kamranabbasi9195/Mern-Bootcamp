@@ -1,6 +1,9 @@
-const { model } = require('mongoose');
 const usersController = require('./usersController');
+const adminsController = require('./adminsController');
+const clientController = require('./clientsController');
 
-module.exports ={
-    usersController
+module.exports = {
+    usersController,
+    adminsController,
+    clientController
 };

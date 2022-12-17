@@ -1,9 +1,9 @@
-var express = require('express');
-var router = express.Router();
+const userRoutes = require('./userRoutes');
+const adminRoutes = require('./adminRoutes');
+const clientRoutes = require('./clientRoutes');
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Mern stack Bootcamp 2022' });
-});
-
-module.exports = router;
+module.exports = {
+  userRoutes,
+  adminRoutes,
+  clientRoutes
+};

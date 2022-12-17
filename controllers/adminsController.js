@@ -1,5 +1,4 @@
-const adminModel = require('../models/admin');
-const { findOneAndDelete, findOne } = require('../models/user');
+const { adminModel } = require('../models');
 
 const addAdmin = (body) => {
     const doc = new adminModel(body);
@@ -12,12 +11,12 @@ const addAdmin = (body) => {
 
 const updateAdmin = (body) =>{
     const query = {_id: body._id};
-    return adminModel.findOneAndUpdate(query, {
+    return adminModel.findOneAndUpdate(query, body, {
         new:true
     });
 };
 
-const delAdmin = (filter) => {
+const deleteAdmin = (filter) => {
     return adminModel.findOneAndDelete(filter);
 };
 
@@ -26,13 +25,13 @@ const getAdmin = (filter) =>{
 };
 
 const getAllAdmins = (filter) =>{
-    return adminModel.find();
+    return adminModel.find(filter);
 };
 
 module.exports = {
     addAdmin, 
     updateAdmin,
-    delAdmin,
+    deleteAdmin,
     getAdmin,
     getAllAdmins
 };

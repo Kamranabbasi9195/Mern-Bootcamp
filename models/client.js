@@ -20,3 +20,4 @@ const clientSchema = new mongoose.Schema({
 },{collection: 'clients'});
 
 module.exports = mongoose.model('clients',clientSchema);
+
