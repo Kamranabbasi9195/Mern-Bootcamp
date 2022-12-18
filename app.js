@@ -11,6 +11,9 @@ const {
   adminRoutes,
   clientRoutes
 } = require ('./routes');
+const authMiddleware = require('./middelwares/authMiddleware');
+
+
 
 var app = express();
 
@@ -32,6 +35,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+
+//actual routes
+app.post('/signup', authMiddleware.usersSignup);
 
 // app.use('/', indexRouter);
 app.use('/users', userRoutes);

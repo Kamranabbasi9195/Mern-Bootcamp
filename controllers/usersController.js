@@ -7,8 +7,7 @@ const addUser = (body) => {
     const query = { _id: doc._id };
     return userModel.findOneAndUpdate(query, doc, {
       upsert: true,
-      new: true  
-    });
+      new: true});
 };
 
 const updateUser = (body) => {
