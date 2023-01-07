@@ -7,6 +7,10 @@ const mongoose = require('mongoose');
 const passport = require('passport');
 const { Strategy } = require('passport-local');
 
+/// import inputmiddleware 
+
+const inputMiddleware = require('./middelwares/inputMiddelware');
+
 // var indexRouter = require('./routes/index');
 const { userRoutes, adminRoutes, clientRoutes } = require('./routes');
 
@@ -41,6 +45,7 @@ passport.use(
 );
 
 //actual Routes
+app.use(inputMiddleware.handleOptions);
 app.post('/signup', authMiddleware.userSignup);
 app.post(
   '/login',
