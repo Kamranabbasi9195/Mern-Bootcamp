@@ -4,21 +4,18 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const mongoose = require('mongoose');
+const passport = require('passport');
+const { Strategy } = require('passport-local');
 
 // var indexRouter = require('./routes/index');
-const {
-  userRoutes,
-  adminRoutes,
-  clientRoutes
-} = require ('./routes');
+const { userRoutes, adminRoutes, clientRoutes } = require('./routes');
+
 const authMiddleware = require('./middelwares/authMiddleware');
-
-
+//var usersRouter = require('./routes/userRoutes');
 
 var app = express();
-
-mongoose
-  .connect('mongodb://127.0.0.1:27017/my-db', (err) =>{
+//connection with database
+mongoose.connect('mongodb://127.0.0.1:27017/my-db', (err) => {
   if (err) {
     return console.log('Error connecting with DB', err);
   }
@@ -36,22 +33,38 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+//make strategy
+passport.use(
+  new Strategy((username, password, done) => {
+    authMiddleware.executeLogin(username, password, done);
+  })
+);
 
-//actual routes
-app.post('/signup', authMiddleware.usersSignup);
-
+//actual Routes
+app.post('/signup', authMiddleware.userSignup);
+app.post(
+  '/login',
+  passport.initialize(),
+  passport.authenticate('local', {
+    session: false,
+    scope: [],
+  }),
+  authMiddleware.generateToken,
+  authMiddleware.respond
+);
+//test Routes
 // app.use('/', indexRouter);
 app.use('/users', userRoutes);
-app.use('/admins', adminRoutes);
-app.use('/clients', clientRoutes);
+app.use('/adminmodel', adminRoutes);
+app.use('/clientmodel', clientRoutes);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};

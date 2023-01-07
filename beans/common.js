@@ -3,6 +3,7 @@ const {
     adminsController,
     clientsController
 } =  require('../controllers');
+const admin =(require('../models/admin'));
 //apply validation
 const signup = async (body) => {
     //
@@ -24,15 +25,32 @@ const signup = async (body) => {
         const userType = body.userType;
         switch (userType) {
             case 'admin':
-                //apply client fields validation here
-                result = await clientController.addAdmin(body.data);                
+
+            //apply validation
+            if(!body.data.firstName){
+                return Promise.reject({error:"First name is required"});
+            }
+            if(!body.data.lastName){
+                return Promise.reject({error:"last name is required"});
+            }
+                result = await adminsController.addAdmin(body.data);                
                 break;
-                case 'client':
-                    //apply client fields validation here
-                    result = await adminsController.addAdmin(body.data);
-                    break;
-        
-            default:
+            case 'client':
+                    if(!body.data.firstName){
+                return Promise.reject({error:"First name is required"});
+            }
+            if(!body.data.lastName){
+                return Promise.reject({error:"last name is required"});
+            }
+            if(!body.data.age){
+                return Promise.reject({error:"age is required"})
+            }
+            if(!body.data.dob){
+                return Promise.reject({error:"date of birth is required"})
+            }
+            result = await clientsController.addClient(body.data);
+            break;
+        default:
                 return Promise.reject({ error: "userType is invalid"});
         }
      const userJson ={
